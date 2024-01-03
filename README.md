@@ -43,10 +43,6 @@ Please cite our papers if you use GRETEL in your projects:
 
 Mario Alfonso Prado-Romero and Giovanni Stilo. 2022. GRETEL: Graph Counterfactual Explanation Evaluation Framework. In Proceedings of the 31st ACM International Conference on Information and Knowledge Management (CIKM '22). Association for Computing Machinery, New York, NY, USA. [https://doi.org/10.1145/3511808.3557608](https://doi.org/10.1145/3511808.3557608)
 
-Mario Alfonso Prado-Romero, Bardh Prenkaj, and Giovanni Stilo. 2023. Developing and Evaluating Graph Counterfactual Explanation with GRETEL. In Proceedings of the Sixteenth ACM International Conference on Web Search and Data Mining (WSDM '23). Association for Computing Machinery, New York, NY, USA, 1180–1183.  [https://doi.org/10.1145/3539597.3573026](https://doi.org/10.1145/3539597.3573026)
-
-Mario Alfonso Prado-Romero, Bardh Prenkaj, Giovanni Stilo, and Fosca Giannotti. 2023. A Survey on Graph Counterfactual Explanations: Definitions, Methods, Evaluation, and Research Challenges. ACM Comput. Surv. Just Accepted (September 2023). [https://doi.org/10.1145/3618105](https://doi.org/10.1145/3618105)
-
 ```latex:
 @inproceedings{prado-romero2022gretel,
   title={GRETEL: Graph Counterfactual Explanation Evaluation Framework},
@@ -61,6 +57,8 @@ Mario Alfonso Prado-Romero, Bardh Prenkaj, Giovanni Stilo, and Fosca Giannotti. 
   series = {CIKM '22}
 }
 ```
+
+Mario Alfonso Prado-Romero, Bardh Prenkaj, and Giovanni Stilo. 2023. Developing and Evaluating Graph Counterfactual Explanation with GRETEL. In Proceedings of the Sixteenth ACM International Conference on Web Search and Data Mining (WSDM '23). Association for Computing Machinery, New York, NY, USA, 1180–1183.  [https://doi.org/10.1145/3539597.3573026](https://doi.org/10.1145/3539597.3573026)
 
 ```latex:
 @inproceedings{prado-romero2023developing,
@@ -77,6 +75,9 @@ location = {Singapore, Singapore},
 series = {WSDM '23}
 } 
 ```
+
+Mario Alfonso Prado-Romero, Bardh Prenkaj, Giovanni Stilo, and Fosca Giannotti. 2023. A Survey on Graph Counterfactual Explanations: Definitions, Methods, Evaluation, and Research Challenges. ACM Comput. Surv. Just Accepted (September 2023). [https://doi.org/10.1145/3618105](https://doi.org/10.1145/3618105)
+
 
 ```latex:
 @article{prado-romero2023survey,
@@ -131,12 +132,12 @@ Activate the created env:
 conda activate GRTL
 ```
 
-Install first Pytorch and then the other dependencies:
+Install with pip Pytorch at first and then the other dependencies:
 
 ```
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
-pip install picologging exmol gensim joblib jsonpickle karateclub matplotlib networkx numpy pandas rdkit scikit-learn scipy selfies sqlalchemy black typing-extensions torch_geometric dgl IPython ipykernel flufl.lock jsonc-parser
+pip install picologging==0.9.2 exmol gensim joblib jsonpickle karateclub matplotlib networkx numpy pandas rdkit scikit-learn scipy selfies sqlalchemy black typing-extensions torch_geometric dgl IPython ipykernel flufl.lock jsonc-parser
 
 ```
 
