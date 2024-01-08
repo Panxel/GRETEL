@@ -4,14 +4,14 @@ import numpy as np
 from os import listdir
 from os.path import isfile, join
 
-from src.n_dataset.generators.base import Generator
-from src.n_dataset.instances.graph import GraphInstance
+from src.dataset.generators.base import Generator
+from src.dataset.instances.graph import GraphInstance
 
 # Python
 from collections import defaultdict
 
 
-class TreeTwitterGCN(Generator):
+class TwitterGCN(Generator):
 
     def init(self):
             base_path = self.local_config['parameters']['data_dir']
@@ -29,14 +29,12 @@ class TreeTwitterGCN(Generator):
         """
         Reads the dataset from the adjacency matrices
         """
-        instance_id = 0
-        label = 0
 
         # Initialize a dictionary to hold the graph nodes
         graph_nodes = defaultdict(list)
 
         # Open the file and read the lines
-        with open('graph_ind.txt', 'r') as file:
+        with open(self._graph_ind_file_path, 'r') as file:
             lines = file.readlines()
 
         # Remove newline characters and convert to integers
@@ -48,16 +46,16 @@ class TreeTwitterGCN(Generator):
             graph_nodes[graph_index].append(node_index)
             node_index += 1
 
-        print(graph_nodes)
+        # print(graph_nodes)
         adj_matrix = []
         for index in graph_nodes.keys():
             adj_matrix.append(np.zeros((len(graph_nodes[index]), len(graph_nodes[index]))))
-            print("HERE",index)
-            print(adj_matrix[index-1])
+            # print("HERE",index)
+            # print(adj_matrix[index-1])
             
 
         # Open the file and read the lines
-        with open('a.txt', 'r') as file:
+        with open(self._adj_file_path, 'r') as file:
             lines = file.readlines()
 
         # Alternatively, you can use list comprehension
@@ -70,24 +68,28 @@ class TreeTwitterGCN(Generator):
         tuple_list = [tuple(map(int, pair.split(','))) for pair in lines]
 
         # Using a list comprehension to find the key(s) for the given value
-
-        for tuple in tuple_list:
-            desired_value = tuple[0]
+        print("HERE1")
+        ind = 0
+        for tuple_item in tuple_list:
+            desired_value = tuple_item[0]
             keys_for_value = [key for key, value in graph_nodes.items() if desired_value in value]
             current_graph_id_list = graph_nodes[keys_for_value[0]]
-            adj_matrix[keys_for_value[0]-1][current_graph_id_list.index(tuple[0])][current_graph_id_list.index(tuple[1])] = 1
+            adj_matrix[keys_for_value[0]-1][current_graph_id_list.index(tuple_item[0])][current_graph_id_list.index(tuple_item[1])] = 1
             # print("NEXT")
             # print(adj_matrix[keys_for_value[0]-1])
+            ind+=1
+            print(ind)
             
+        print("HERE2")
 
         # Open the file and read the lines
-        with open('graph_lab.txt', 'r') as file:
+        with open(self._graph_labels_file_path, 'r') as file:
             lines = file.readlines()
 
         # Remove newline characters and convert to integers
         label_list = [line.strip() for line in lines]
 
-        print(lines)
-
+        # print(lines)
+        print("HERE3")
         for index in graph_nodes.keys():
             self.dataset.instances.append(GraphInstance(id =index , label = label_list[index-1], data = adj_matrix[index-1]))
