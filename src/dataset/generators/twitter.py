@@ -72,18 +72,17 @@ class TwitterGCN(Generator):
 
         # Using a list comprehension to find the key(s) for the given value
         print("HERE1")
-        ind = 0
         for tuple_item in tuple_list:
             desired_value = tuple_item[0]
             keys_for_value = [key for key, value in graph_nodes.items() if desired_value in value]
-            if keys_for_value >= self.num_instances:
+            if keys_for_value[0] >= self.num_instances:
                 break
             current_graph_id_list = graph_nodes[keys_for_value[0]]
             adj_matrix[keys_for_value[0]-1][current_graph_id_list.index(tuple_item[0])][current_graph_id_list.index(tuple_item[1])] = 1
             # print("NEXT")
             # print(adj_matrix[keys_for_value[0]-1])
-            ind+=1
-            print(ind)
+            print(keys_for_value[0])
+            
             
         print("HERE2")
 
@@ -99,4 +98,4 @@ class TwitterGCN(Generator):
         for key in graph_nodes.keys():
             if key >= self.num_instances:
                 break
-            self.dataset.instances.append(GraphInstance(id =key , label = label_list[key-1], data = adj_matrix[key-1]))
+            self.dataset.instances.append(GraphInstance(id = int(key) , label = int(label_list[key-1]), data = adj_matrix[key-1]))
