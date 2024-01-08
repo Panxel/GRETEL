@@ -15,7 +15,8 @@
           "parameters": {
               "generator": {
                   "class": "src.dataset.generators.twitter.TwitterGCN", 
-                  "parameters": { "data_dir": "data/datasets/TWITTER-Real-Graph-Partial" }
+                  "parameters": { "data_dir": "data/datasets/TWITTER-Real-Graph-Partial", 
+                  "num_instances": 500 }
               }
           } 
       },
