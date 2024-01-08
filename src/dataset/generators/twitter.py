@@ -15,7 +15,7 @@ class TwitterGCN(Generator):
 
     def init(self):
             base_path = self.local_config['parameters']['data_dir']
-            self.num_instanes = self.local_config['parameters']['num_instances']
+            self.num_instances = self.local_config['parameters']['num_instances']
             self._adj_file_path = join(base_path, 'TWITTER-Real-Graph-Partial_A.txt')
             self._graph_ind_file_path = join(base_path, 'TWITTER-Real-Graph-Partial_graph_indicator.txt')
             self._graph_labels_file_path = join(base_path, 'TWITTER-Real-Graph-Partial_graph_labels.txt')
@@ -50,7 +50,7 @@ class TwitterGCN(Generator):
         # print(graph_nodes)
         adj_matrix = []
         for key in graph_nodes.keys():
-            if key >= self.num_instanes:
+            if key >= self.num_instances:
                 break
             adj_matrix.append(np.zeros((len(graph_nodes[key]), len(graph_nodes[key]))))
             # print("HERE",index)
@@ -76,7 +76,7 @@ class TwitterGCN(Generator):
         for tuple_item in tuple_list:
             desired_value = tuple_item[0]
             keys_for_value = [key for key, value in graph_nodes.items() if desired_value in value]
-            if keys_for_value >= self.num_instanes:
+            if keys_for_value >= self.num_instances:
                 break
             current_graph_id_list = graph_nodes[keys_for_value[0]]
             adj_matrix[keys_for_value[0]-1][current_graph_id_list.index(tuple_item[0])][current_graph_id_list.index(tuple_item[1])] = 1
@@ -97,4 +97,6 @@ class TwitterGCN(Generator):
         # print(lines)
         print("HERE3")
         for key in graph_nodes.keys():
+            if key >= self.num_instances:
+                break
             self.dataset.instances.append(GraphInstance(id =key , label = label_list[key-1], data = adj_matrix[key-1]))
