@@ -1,8 +1,8 @@
 
 
 from src.core.explainer_base import Explainer
-from src.n_dataset.instances.base import DataInstance
-from src.n_dataset.instances.graph import GraphInstance
+from src.dataset.instances.base import DataInstance
+from src.dataset.instances.graph import GraphInstance
 from src.utils.cfg_utils import retake_oracle
 from copy import deepcopy
 import numpy as np

@@ -1,8 +1,8 @@
 import networkx as nx
 import numpy as np
 
-from src.n_dataset.generators.base import Generator
-from src.n_dataset.instances.graph import GraphInstance
+from src.dataset.generators.base import Generator
+from src.dataset.instances.graph import GraphInstance
 
 
 class TreeInfinityCycles(Generator):
@@ -40,6 +40,8 @@ class TreeInfinityCycles(Generator):
                 label = 1  # Graph contains an infinity-shaped cycle
             else:
                 label = 0  # Graph is a random tree
+
+            print(f'ID : {i}, label : {label} and type of data : {type(t_graph)}')
 
             self.dataset.instances.append(GraphInstance(id=i, data=t_graph, label=label))
 
