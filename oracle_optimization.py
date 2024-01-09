@@ -18,7 +18,8 @@ def objective(trial):
     num_conv_layers = trial.suggest_categorical('num_conv_layers', [1, 2, 3, 4, 5])
     num_dense_layers = trial.suggest_categorical('num_dense_layers', [1, 2, 3])
     conv_booster = trial.suggest_categorical('conv_booster', [1.0, 2.0, 3.0])
-    linear_decay = trial.suggest_categorical('linear_decay', [1.0, 1.5, 2])
+    linear_decay = trial.suggest_categorical('linear_decay', [1.0, 1.5, 2.0])
+
 
 
     # Update the configuration file with the new hyperparameters
@@ -111,7 +112,7 @@ if __name__ == "__main__":
     config_file_path = "config/submission/oracle_template_optimization/TWITTER-test.json"
     current_directory = os.getcwd()
     study = optuna.create_study(direction='maximize')
-    study.optimize(objective, n_trials=2)  # You can adjust the number of trials
+    study.optimize(objective, n_trials=20)  # You can adjust the number of trials
 
 
 
