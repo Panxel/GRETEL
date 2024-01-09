@@ -33,11 +33,13 @@ def run_experiment(config_file):
     subprocess.run(command, text=True, shell=True)  #RUN EXPERIMENT
     
     # NEED TO CHANGE FOR OPT
-    base_folder = 'C://Users//hajap//OneDrive//Desktop//GRETEL-main//output//results//examples_configs//TreeCyclesRand-cb6337cf640cfc712837473de946df57//OracleTorch-8744585df75bdd060d7209d50929c472'
-
-    #base_folder = base_folder.replace('\\', '/')
+    base_folder = "/home/daniel/ml/GRETEL/output/results/examples_configs"
+    
     # Find the most recent results path
     output_path = find_most_recent_results_path(base_folder)
+    
+    print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEE")
+    print(output_path)
 
     with open(output_path, 'r') as file:
         json_data = json.load(file)
@@ -85,14 +87,12 @@ def update_config_file(config_file_path, epochs, batch_size, optimizer, lr, loss
     oracle_params['batch_size'] = batch_size
 
     # Update optimizer params
-    optimizer_params = oracle_params['optimizer']['parameters']
-    optimizer_params['class'] = optimizer
-    optimizer_params['lr'] = lr
+    oracle_params['optimizer']['class'] = optimizer
+    oracle_params['optimizer']['parameters']['lr'] = lr
 
     # Update loss function params
-    loss_fn_params = oracle_params['loss_fn']['parameters']
-    loss_fn_params['class'] = loss_f
-    loss_fn_params['reduction'] = reduction
+    oracle_params['loss_fn']['parameters']['reduction'] = reduction
+    oracle_params['loss_fn']['class'] = loss_f 
 
     # Update model params
     model_params = oracle_params['model']['parameters']
@@ -112,7 +112,7 @@ def update_config_file(config_file_path, epochs, batch_size, optimizer, lr, loss
 
             
 if __name__ == "__main__":
-    config_file_path = "C:/Users/hajap/OneDrive/Desktop/GRETEL-main/config/TCR-500-64-0.4_GCN_RSGG.json"
+    config_file_path = "config/submission/TWITTER-test.json"
 
     study = optuna.create_study(direction='maximize')
     study.optimize(objective, n_trials=1)  # You can adjust the number of trials
