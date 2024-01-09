@@ -34,6 +34,10 @@ class TwitterGCN(Generator):
         # Initialize a dictionary to hold the graph nodes
         graph_nodes = defaultdict(list)
 
+
+        """
+        Code to know which node correspond to which graph
+        """
         # Open the file and read the lines
         with open(self._graph_ind_file_path, 'r') as file:
             lines = file.readlines()
@@ -41,50 +45,62 @@ class TwitterGCN(Generator):
         # Remove newline characters and convert to integers
         lines = [int(line.strip()) for line in lines]
 
-        # Populate the dictionary
+        # Populate the dictionary ({1:[1,2,3,4] ...})
         node_index = 1
         for graph_index in lines:
             graph_nodes[graph_index].append(node_index)
             node_index += 1
 
-        # print(graph_nodes)
+
+        """
+        Create the list of adj matrix filled with zeros
+        """
+
+        #List of adj matrix
         adj_matrix = []
         for key in graph_nodes.keys():
+            #We don't want to add more than the number of instances
             if key > self.num_instances:
                 break
+            #Append to the list a adj matrix filled with zeros that has the right shape
             adj_matrix.append(np.zeros((len(graph_nodes[key]), len(graph_nodes[key]))))
-            # print("HERE",index)
-            # print(adj_matrix[index-1])
             
+
+        """
+        Get every tuple of arcs
+        """
+
 
         # Open the file and read the lines
         with open(self._adj_file_path, 'r') as file:
             lines = file.readlines()
 
-        # Alternatively, you can use list comprehension
-        # numbers = [(int(a), int(b)) for line in lines for num in line for a, b in [num.strip().split(',')]]
-
         # Remove newline characters and convert to integers
         lines = [line.strip() for line in lines]
 
-        # Using a list comprehension to convert each string into a tuple
+        # Using a list comprehension to convert each string into a tuple on int
         tuple_list = [tuple(map(int, pair.split(','))) for pair in lines]
 
-        # Using a list comprehension to find the key(s) for the given value
-        # print("HERE1")
+
+        """
+        Get the right adj matrix for every graph
+        """
+
         for tuple_item in tuple_list:
             desired_value = tuple_item[0]
+            # Using a list comprehension to find the key(s) for the given value ((1,2) -> graph_id : 1)
             keys_for_value = [key for key, value in graph_nodes.items() if desired_value in value]
             if keys_for_value[0] > self.num_instances:
                 break
-            current_graph_id_list = graph_nodes[keys_for_value[0]]
-            adj_matrix[keys_for_value[0]-1][current_graph_id_list.index(tuple_item[0])][current_graph_id_list.index(tuple_item[1])] = 1
-            # print("NEXT")
-            # print(adj_matrix[keys_for_value[0]-1])
-            # print(keys_for_value[0])
-            
-            
-        # print("HERE2")
+            #Get all the nodes for the current graph
+            current_graph_node_list = graph_nodes[keys_for_value[0]]
+            #Get the right adj matrix in the list for the current graph and change the 0 to 1 if there is an arc
+            adj_matrix[keys_for_value[0]-1][current_graph_node_list.index(tuple_item[0])][current_graph_node_list.index(tuple_item[1])] = 1
+        
+
+        """
+        Append the graph into our instances
+        """
 
         # Open the file and read the lines
         with open(self._graph_labels_file_path, 'r') as file:
@@ -93,11 +109,7 @@ class TwitterGCN(Generator):
         # Remove newline characters and convert to integers
         label_list = [line.strip() for line in lines]
 
-        # print(lines)
-        # print("HERE3")
-
-
-
+        #In our dataset, the labels are 1 or -1 but this framework cannot take -1 as a label it's either 0 or 1
         for key in graph_nodes.keys():
             if key > self.num_instances:
                 break

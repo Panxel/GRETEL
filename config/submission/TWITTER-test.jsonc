@@ -16,14 +16,14 @@
               "generator": {
                 "class": "src.dataset.generators.twitter.TwitterGCN", 
                 "parameters": { "data_dir": "data/datasets/TWITTER-Real-Graph-Partial", 
-                "num_instances": 100 }
+                "num_instances": 130 }
               }
           } 
       },
         "oracle": {
           "class": "src.oracle.nn.torch.OracleTorch",
           "parameters": {
-              "epochs": 1,
+              "epochs": 2,
               "batch_size": 32,
               "optimizer": {
                   "class": "torch.optim.Adam",
