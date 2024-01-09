@@ -36,7 +36,7 @@ def run_experiment(config_file):
     
     # NEED TO CHANGE FOR OPT
     base_folder = current_directory + "/output/results/optimization/TwitterGCN-b482cdc7f20a861ad62d177a2e8f0323"
-    print(base_folder)
+    #print(base_folder)
     # Find the most recent results path
     output_path = find_most_recent_results_path(base_folder)
 
@@ -52,22 +52,14 @@ def run_experiment(config_file):
     
 
 def find_most_recent_results_path(base_folder):
-    # Get all subdirectories in the base folder
-    subdirectories = [d for d in Path(base_folder).iterdir() if d.is_dir()]
+    # Create a Path object for the base folder
+    base_path = Path(base_folder)
 
-    # Initialize a list to store all results paths
-    all_results_paths = []
+    # Use rglob to recursively search for the specified file pattern
+    results_paths = list(base_path.rglob('results_run--1.json'))
 
-    # Iterate through each subdirectory
-    for subdirectory in subdirectories:
-        # Find results paths in the current subdirectory
-        results_paths = list(subdirectory.glob('**/results_run--1.json'))
-        
-        # Add results paths to the list
-        all_results_paths.extend(results_paths)
-
-    # Sort the list of results paths by modification time
-    sorted_results_paths = sorted(all_results_paths, key=lambda p: p.stat().st_mtime, reverse=True)
+    # Sort the results paths by modification time
+    sorted_results_paths = sorted(results_paths, key=lambda p: p.stat().st_mtime, reverse=True)
 
     # Check if any results paths were found
     if sorted_results_paths:

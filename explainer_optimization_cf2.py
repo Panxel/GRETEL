@@ -14,7 +14,7 @@ def objective(trial):
     epochs = trial.suggest_categorical('epochs', [1, 10, 50, 100])
     n_nodes = trial.suggest_categorical('n_nodes', [1, 10, 50, 100])
     lr = trial.suggest_categorical('lr', [1e-5, 1e-4, 1e-3, 1e-2, 1e-1])
-    batch_size_ratio = trial.suggest_categorical('lr', [0.1, 0.3, 0.5, 0.8])
+    batch_size_ratio = trial.suggest_categorical('batch_size_ratio', [0.1, 0.3, 0.5, 0.8])
     ##################################
 
 
@@ -37,7 +37,7 @@ def run_experiment(config_file):
     
     # NEED TO CHANGE FOR OPT
     base_folder = current_directory + "/output/results/optimization/TwitterGCN-b482cdc7f20a861ad62d177a2e8f0323"
-    print(base_folder)
+    #print(base_folder)
     # Find the most recent results path
     output_path = find_most_recent_results_path(base_folder)
 
@@ -56,27 +56,20 @@ def run_experiment(config_file):
     explainer_GED = sum(explainer_GED_values)/len(explainer_GED_values)
     return explainer_GED, explainer_correctness
 
-    
-
 def find_most_recent_results_path(base_folder):
-    # Get all subdirectories in the base folder
-    subdirectories = [d for d in Path(base_folder).iterdir() if d.is_dir()]
+    # Create a Path object for the base folder
+    base_path = Path(base_folder)
 
-    # Filter subdirectories that contain 'results_run--1.json'
-    filtered_subdirectories = [
-        d for d in subdirectories if (d / 'results_run--1.json').exists()
-    ]
+    # Use rglob to recursively search for the specified file pattern
+    results_paths = list(base_path.rglob('results_run--1.json'))
 
-    # Sort the filtered subdirectories by modification time
-    sorted_subdirectories = sorted(
-        filtered_subdirectories, key=lambda d: d.stat().st_mtime, reverse=True
-    )
+    # Sort the results paths by modification time
+    sorted_results_paths = sorted(results_paths, key=lambda p: p.stat().st_mtime, reverse=True)
 
-    # Check if any subdirectories were found
-    if sorted_subdirectories:
-        most_recent_folder = sorted_subdirectories[0]
-        results_json_path = most_recent_folder / 'results_run--1.json'
-        return results_json_path
+    # Check if any results paths were found
+    if sorted_results_paths:
+        most_recent_path = sorted_results_paths[0]
+        return most_recent_path
 
     return None
 
@@ -106,7 +99,7 @@ def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
     global iteration 
     output_dir = os.path.join(config_directory, 'oracle_opt')    
     os.makedirs(output_dir, exist_ok=True)
-    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_epochs{epochs}_batch{batch_size}_{iteration}.json'))
+    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_epochs{epochs}_batch_size_ratio{batch_size_ratio}_{iteration}.json'))
     with open(updated_config_path, 'w') as file:
         json.dump(config, file, indent=2)
     iteration +=1
@@ -123,7 +116,7 @@ if __name__ == "__main__":
 
     print("Number of finished trials: ", len(study.trials))
     print("Best trial:")
-    trial = study.best_trial
+    trial = study.best_trials
 
     print(f"Value: {trial.value}")
     print("Params: ")
