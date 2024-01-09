@@ -5,10 +5,12 @@ import jsoncomment
 import optuna
 import os
 
+iteration = 0
+
 def objective(trial):
     # Define the hyperparameters to optimize
     epochs = trial.suggest_categorical('epochs', [1, 10, 50, 100])
-    batch_size = trial.suggest_categorical('batch_size', [1, 32, 64, 128])
+    batch_size = trial.suggest_categorical('batch_size', [1, 32, 64])
     optimizer = trial.suggest_categorical('optimizer', ["torch.optim.Adam", "torch.optim.RMSprop"])
     lr = trial.suggest_categorical('lr', [1e-5, 1e-4, 1e-3, 1e-2, 1e-1])
     loss_f = trial.suggest_categorical('loss_f', ["torch.nn.CrossEntropyLoss", "torch.nn.MSELoss"])
@@ -33,13 +35,10 @@ def run_experiment(config_file):
     subprocess.run(command, text=True, shell=True)  #RUN EXPERIMENT
     
     # NEED TO CHANGE FOR OPT
-    base_folder = "/home/daniel/ml/GRETEL/output/results/examples_configs"
-    
+    base_folder = current_directory + "/output/results/optimization/TwitterGCN-b482cdc7f20a861ad62d177a2e8f0323"
+    print(base_folder)
     # Find the most recent results path
     output_path = find_most_recent_results_path(base_folder)
-    
-    print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEE")
-    print(output_path)
 
     with open(output_path, 'r') as file:
         json_data = json.load(file)
@@ -102,20 +101,23 @@ def update_config_file(config_file_path, epochs, batch_size, optimizer, lr, loss
     model_params['linear_decay'] = linear_decay
 
     # Save the updated configuration
+    global iteration 
     output_dir = os.path.join(config_directory, 'oracle_opt')    
     os.makedirs(output_dir, exist_ok=True)
-    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_epochs{epochs}_batch{batch_size}.json'))
+    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_epochs{epochs}_batch{batch_size}_{iteration}.json'))
     with open(updated_config_path, 'w') as file:
         json.dump(config, file, indent=2)
-
+    iteration +=1
     return updated_config_path
 
             
 if __name__ == "__main__":
-    config_file_path = "config/submission/TWITTER-test.json"
-
+    config_file_path = "config/submission/oracle_template_optimization/TWITTER-test.json"
+    current_directory = os.getcwd()
     study = optuna.create_study(direction='maximize')
-    study.optimize(objective, n_trials=1)  # You can adjust the number of trials
+    study.optimize(objective, n_trials=2)  # You can adjust the number of trials
+
+
 
     print("Number of finished trials: ", len(study.trials))
     print("Best trial:")
