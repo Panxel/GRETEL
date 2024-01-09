@@ -55,23 +55,27 @@ def find_most_recent_results_path(base_folder):
     # Get all subdirectories in the base folder
     subdirectories = [d for d in Path(base_folder).iterdir() if d.is_dir()]
 
-    # Filter subdirectories that contain 'results_run--1.json'
-    filtered_subdirectories = [
-        d for d in subdirectories if (d / 'results_run--1.json').exists()
-    ]
+    # Initialize a list to store all results paths
+    all_results_paths = []
 
-    # Sort the filtered subdirectories by modification time
-    sorted_subdirectories = sorted(
-        filtered_subdirectories, key=lambda d: d.stat().st_mtime, reverse=True
-    )
+    # Iterate through each subdirectory
+    for subdirectory in subdirectories:
+        # Find results paths in the current subdirectory
+        results_paths = list(subdirectory.glob('**/results_run--1.json'))
+        
+        # Add results paths to the list
+        all_results_paths.extend(results_paths)
 
-    # Check if any subdirectories were found
-    if sorted_subdirectories:
-        most_recent_folder = sorted_subdirectories[0]
-        results_json_path = most_recent_folder / 'results_run--1.json'
-        return results_json_path
+    # Sort the list of results paths by modification time
+    sorted_results_paths = sorted(all_results_paths, key=lambda p: p.stat().st_mtime, reverse=True)
+
+    # Check if any results paths were found
+    if sorted_results_paths:
+        most_recent_path = sorted_results_paths[0]
+        return most_recent_path
 
     return None
+
 
 
 def update_config_file(config_file_path, epochs, batch_size, optimizer, lr, loss_f, reduction, num_conv_layers, num_dense_layers, conv_booster, linear_decay):
