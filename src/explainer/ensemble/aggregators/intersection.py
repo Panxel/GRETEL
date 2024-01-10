@@ -3,7 +3,7 @@ import sys
 from abc import ABC
 
 from src.core.explainer_base import Explainer
-from src.explainer.ensemble.explanation_aggregator_base import ExplanationAggregator
+from src.explainer.ensemble.aggregators.base import ExplanationAggregator
 from src.evaluation.evaluation_metric_ged import GraphEditDistanceMetric
 import numpy as np
 
@@ -11,7 +11,7 @@ from src.core.factory_base import get_instance_kvargs
 from src.utils.cfg_utils import get_dflts_to_of, init_dflts_to_of, inject_dataset, inject_oracle, retake_oracle, retake_dataset
 
 
-class ExplanationUnion(ExplanationAggregator):
+class ExplanationIntersection(ExplanationAggregator):
 
     def init(self):
         super().init()
@@ -21,21 +21,22 @@ class ExplanationUnion(ExplanationAggregator):
 
 
     def aggregate(self, org_instance, explanations):
-        # Getting the union of the adjacency matrices of all explanations
+        # Intersecting the adjacency matrices of the explanations
         explanations_A_list = [exp.data for exp in explanations]
-        A_union = self.union_arrays(explanations_A_list)
+        A_intersection = self.intersect_arrays(explanations_A_list)
 
         # cloning the first explanation
         result = copy.deepcopy(explanations[0])
-        result.data = A_union
+        # replacing the adjacency matrix for the intersection
+        result.data = A_intersection
 
         return result
     
 
-    def union_arrays(self, arrays):
+    def intersect_arrays(self, arrays):
         result = np.zeros_like(arrays[0], dtype=int)
         for arr in arrays:
-            result |= arr
+            result &= arr
         return result
     
     
