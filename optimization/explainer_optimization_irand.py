@@ -11,17 +11,15 @@ def objective(trial):
     # Define the hyperparameters to optimize
 
     ######## Ajust others here #######
-    epochs = trial.suggest_categorical('epochs', [1, 10, 50, 100])
-    n_nodes = trial.suggest_categorical('n_nodes', [1, 10, 50, 100])
-    lr = trial.suggest_categorical('lr', [1e-5, 1e-4, 1e-3, 1e-2, 1e-1])
-    batch_size_ratio = trial.suggest_categorical('batch_size_ratio', [0.1, 0.3, 0.5, 0.8])
+    p = trial.suggest_categorical('p', [0.01, 0.1, 0.5])
+    t = trial.suggest_categorical('t', [1, 2, 3, 4, 5])
     ##################################
 
 
 
     # Update the configuration file with the new hyperparameters
     ######## Change paramters accordingly ########
-    new_config_file_path = update_config_file(config_file_path, epochs=epochs, n_nodes=n_nodes, lr=lr, batch_size_ratio=batch_size_ratio)
+    new_config_file_path = update_config_file(config_file_path, p, t)
     ##############################################
 
 
@@ -72,7 +70,7 @@ def find_most_recent_results_path(base_folder):
     return None
 
 
-def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
+def update_config_file(config_file_path, p, t):
     config_directory = os.path.dirname(config_file_path)
     
     with open(config_file_path, 'r') as file:
@@ -81,13 +79,13 @@ def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
 
 
     ######## Ajust others here #######
-
+    # irand example:
+    # "explainers" : [{"class": "src.explainer.search.i_rand.IRandExplainer", "parameters": {"p": 0.01, "t": 3}}],
     # Update Explainer params
+    config['explainers'][0]['class'] = "src.explainer.search.i_rand.IRandExplainer"
     explainer_params = config['explainers'][0]['parameters']
-    explainer_params['epochs'] = epochs
-    explainer_params['batch_size_ratio'] = batch_size_ratio
-    explainer_params['lr'] = lr
-    explainer_params['n_nodes'] = n_nodes
+    explainer_params['p'] = p
+    explainer_params['t'] = t
 
     ##################################
 
@@ -95,9 +93,9 @@ def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
 
     # Save the updated configuration
     global iteration 
-    output_dir = os.path.join(config_directory, 'explainer_opt_cf2')    
+    output_dir = os.path.join(config_directory, 'explainer_opt_irand')    
     os.makedirs(output_dir, exist_ok=True)
-    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_epochs{epochs}_batch_size_ratio{batch_size_ratio}_{iteration}.json'))
+    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_p{p}_t{t}_{iteration}.json'))
     with open(updated_config_path, 'w') as file:
         json.dump(config, file, indent=2)
     iteration +=1
@@ -105,9 +103,9 @@ def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
 
             
 if __name__ == "__main__":
-    #config_file_path = "config/submission/oracle_template_optimization/TWITTER-test.json"
     
-    config_file_path = "config/BBBP_GCN_RSGG.json"
+    
+    config_file_path = "config/submission/oracle_template_optimization/TWITTER-test.json" #add optimized oracle file here
     current_directory = os.getcwd()
     study = optuna.create_study(directions=['minimize', 'maximize'])
     study.optimize(objective, n_trials=2)  # adjust the number of trials
