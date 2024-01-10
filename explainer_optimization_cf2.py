@@ -35,8 +35,8 @@ def run_experiment(config_file):
     command = f"conda run -n GRTL python main.py {config_file}"
     subprocess.run(command, text=True, shell=True)  #RUN EXPERIMENT
     
-    # NEED TO CHANGE FOR OPT
-    base_folder = current_directory + "/output/results/optimization/TwitterGCN-b482cdc7f20a861ad62d177a2e8f0323"
+    
+    base_folder = current_directory + "/output/results/optimization"
     #print(base_folder)
     # Find the most recent results path
     output_path = find_most_recent_results_path(base_folder)
@@ -49,8 +49,6 @@ def run_experiment(config_file):
 
     # Extract the 'Graph_Edit_Distance' values
     explainer_GED_values = json_data.get('Graph_Edit_Distance', [])
-
-    # Maybe get oracle_calls?
 
     explainer_correctness = explainer_correctness_values.count(1)/len(explainer_correctness_values)
     explainer_GED = sum(explainer_GED_values)/len(explainer_GED_values)
@@ -84,7 +82,7 @@ def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
 
     ######## Ajust others here #######
 
-    # Update Oracle params
+    # Update Explainer params
     explainer_params = config['explainers'][0]['parameters']
     explainer_params['epochs'] = epochs
     explainer_params['batch_size_ratio'] = batch_size_ratio
@@ -97,7 +95,7 @@ def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
 
     # Save the updated configuration
     global iteration 
-    output_dir = os.path.join(config_directory, 'oracle_opt')    
+    output_dir = os.path.join(config_directory, 'explainer_opt_cf2')    
     os.makedirs(output_dir, exist_ok=True)
     updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_epochs{epochs}_batch_size_ratio{batch_size_ratio}_{iteration}.json'))
     with open(updated_config_path, 'w') as file:
@@ -107,18 +105,19 @@ def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
 
             
 if __name__ == "__main__":
-    config_file_path = "config/submission/oracle_template_optimization/TWITTER-test.json"
+    #config_file_path = "config/submission/oracle_template_optimization/TWITTER-test.json"
+    
+    config_file_path = "config/BBBP_GCN_RSGG.json"
     current_directory = os.getcwd()
     study = optuna.create_study(directions=['minimize', 'maximize'])
-    study.optimize(objective, n_trials=2)  # You can adjust the number of trials
+    study.optimize(objective, n_trials=2)  # adjust the number of trials
 
 
 
     print("Number of finished trials: ", len(study.trials))
     print("Best trial:")
-    trial = study.best_trials
+    best_trials = study.best_trials
 
-    print(f"Value: {trial.value}")
-    print("Params: ")
-    for key, value in trial.params.items():
-        print(f"    {key}: {value}")
+    for idx, trial in enumerate(best_trials):
+        values = trial.values  
+        print(f"Trial {idx + 1} - Index: {trial.number}, Graph Edit Distance, Correctness : {values} ")
