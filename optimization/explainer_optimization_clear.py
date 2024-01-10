@@ -72,7 +72,7 @@ def find_most_recent_results_path(base_folder):
 
     return None
 
-
+# This creates the new config file with the random parameters chosen in def objective
 def update_config_file(config_file_path, epochs, lr, lambda_cfe, alpha, batch_size_ratio):
     config_directory = os.path.dirname(config_file_path)
     

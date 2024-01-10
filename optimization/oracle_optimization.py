@@ -5,6 +5,11 @@ import jsoncomment
 import optuna
 import os
 
+"""
+HOW RO RUN THIS FILE:
+python optimization/oracle_optimization.py 
+from the main GRETEL path
+"""
 iteration = 0
 
 def objective(trial):
@@ -31,13 +36,13 @@ def objective(trial):
     return oracle_acc
 
 def run_experiment(config_file):
-      
+    #RUN EXPERIMENT
     command = f"conda run -n GRTL python main.py {config_file}"
-    subprocess.run(command, text=True, shell=True)  #RUN EXPERIMENT
+    subprocess.run(command, text=True, shell=True)  
     
     
     base_folder = current_directory + "/output/results/optimization"
-    #print(base_folder)
+    
     # Find the most recent results path
     output_path = find_most_recent_results_path(base_folder)
 
@@ -46,7 +51,7 @@ def run_experiment(config_file):
 
     # Extract the 'Oracle_Accuracy' values
     oracle_accuracy_values = json_data.get('Oracle_Accuracy', [])
-    # Maybe use oracle_calls too?
+    # could use Oracle Calls aswell
     oracle_acc = oracle_accuracy_values.count(1)/len(oracle_accuracy_values)
     return oracle_acc
 
@@ -70,7 +75,7 @@ def find_most_recent_results_path(base_folder):
     return None
 
 
-
+# This creates the new config file with the random parameters chosen in def objective
 def update_config_file(config_file_path, epochs, batch_size, optimizer, lr, loss_f, reduction, num_conv_layers, num_dense_layers, conv_booster, linear_decay):
     config_directory = os.path.dirname(config_file_path)
     
@@ -109,6 +114,7 @@ def update_config_file(config_file_path, epochs, batch_size, optimizer, lr, loss
 
             
 if __name__ == "__main__":
+    #Create a new optuna study to find best parameter combinations
     config_file_path = "config/submission/oracle_template_optimization/TWITTER-test.json"
     current_directory = os.getcwd()
     study = optuna.create_study(direction='maximize')
