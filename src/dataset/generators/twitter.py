@@ -10,6 +10,8 @@ from src.dataset.instances.graph import GraphInstance
 # Python
 from collections import defaultdict
 
+from src.oracle.nn import torch
+
 
 class TwitterGCN(Generator):
 
@@ -131,10 +133,12 @@ class TwitterGCN(Generator):
             label = 1
             if int(label_list[key-1]) == -1 :
                 label = 0
-            self.dataset.instances.append(GraphInstance(id = int(key) , label = label, data = adj_matrix[key-1],edge_weights=edge_matrix))
-
-            self.context.logger.info(f"Generated instance with id {key} and label={label}")
             
-            print("\n")
-            self.context.logger.info(adj_matrix[key-1])
+            self.dataset.instances.append(GraphInstance(id = int(key) , label = label, data = adj_matrix[key-1],edge_weights=edge_matrix[key-1].flatten()))
+
+            #self.context.logger.info(f"Generated instance with id {key} and label={label}")
+            
+            #print("\n")
+            #elf.context.logger.info(edge_matrix[key-1])
+            #self.context.logger.info(adj_matrix[key-1])
 
