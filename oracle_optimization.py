@@ -36,7 +36,7 @@ def run_experiment(config_file):
     subprocess.run(command, text=True, shell=True)  #RUN EXPERIMENT
     
     # NEED TO CHANGE FOR OPT
-    base_folder = current_directory + "/output/results/optimization/TwitterGCN-b482cdc7f20a861ad62d177a2e8f0323"
+    base_folder = current_directory + "/output/results/optimization/TwitterGCN-5c8ed977df8e2c27ff4619fdc69ccd98"
     #print(base_folder)
     # Find the most recent results path
     output_path = find_most_recent_results_path(base_folder)
