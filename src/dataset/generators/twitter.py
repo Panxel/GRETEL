@@ -19,6 +19,7 @@ class TwitterGCN(Generator):
             self._adj_file_path = join(base_path, 'TWITTER-Real-Graph-Partial_A.txt')
             self._graph_ind_file_path = join(base_path, 'TWITTER-Real-Graph-Partial_graph_indicator.txt')
             self._graph_labels_file_path = join(base_path, 'TWITTER-Real-Graph-Partial_graph_labels.txt')
+            self._edge_att_file_path = join(base_path, 'TWITTER-Real-Graph-Partial_edge_attributes.txt')
             self.generate_dataset()
 
     def generate_dataset(self):
@@ -58,12 +59,14 @@ class TwitterGCN(Generator):
 
         #List of adj matrix
         adj_matrix = []
+        edge_matrix = []
         for key in graph_nodes.keys():
             #We don't want to add more than the number of instances
             if key > self.num_instances:
                 break
             #Append to the list a adj matrix filled with zeros that has the right shape
-            adj_matrix.append(np.zeros((len(graph_nodes[key]), len(graph_nodes[key]))))
+            adj_matrix.append(np.zeros((len(graph_nodes[key]), len(graph_nodes[key])),dtype=np.int32))
+            edge_matrix.append(np.zeros((len(graph_nodes[key]), len(graph_nodes[key])),dtype=np.float32))
             
 
         """
@@ -81,11 +84,21 @@ class TwitterGCN(Generator):
         # Using a list comprehension to convert each string into a tuple on int
         tuple_list = [tuple(map(int, pair.split(','))) for pair in lines]
 
+        """
+        Get every weigths
+        """
+
+        # Open the file and read the lines
+        with open(self._edge_att_file_path, 'r') as file:
+            lines = file.readlines()
+
+        # Remove newline characters and convert to integers
+        edge_weights_list = [line.strip() for line in lines]
 
         """
         Get the right adj matrix for every graph
         """
-
+        counter = 0
         for tuple_item in tuple_list:
             desired_value = tuple_item[0]
             # Using a list comprehension to find the key(s) for the given value ((1,2) -> graph_id : 1)
@@ -96,7 +109,8 @@ class TwitterGCN(Generator):
             current_graph_node_list = graph_nodes[keys_for_value[0]]
             #Get the right adj matrix in the list for the current graph and change the 0 to 1 if there is an arc
             adj_matrix[keys_for_value[0]-1][current_graph_node_list.index(tuple_item[0])][current_graph_node_list.index(tuple_item[1])] = 1
-        
+            edge_matrix[keys_for_value[0]-1][current_graph_node_list.index(tuple_item[0])][current_graph_node_list.index(tuple_item[1])] = edge_weights_list[counter]
+            counter +=1
 
         """
         Append the graph into our instances
@@ -108,6 +122,7 @@ class TwitterGCN(Generator):
 
         # Remove newline characters and convert to integers
         label_list = [line.strip() for line in lines]
+        
 
         #In our dataset, the labels are 1 or -1 but this framework cannot take -1 as a label it's either 0 or 1
         for key in graph_nodes.keys():
@@ -116,4 +131,10 @@ class TwitterGCN(Generator):
             label = 1
             if int(label_list[key-1]) == -1 :
                 label = 0
-            self.dataset.instances.append(GraphInstance(id = int(key) , label = label, data = adj_matrix[key-1]))
+            self.dataset.instances.append(GraphInstance(id = int(key) , label = label, data = adj_matrix[key-1],edge_weights=edge_matrix))
+
+            self.context.logger.info(f"Generated instance with id {key} and label={label}")
+            
+            print("\n")
+            self.context.logger.info(adj_matrix[key-1])
+
