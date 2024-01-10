@@ -35,8 +35,8 @@ def run_experiment(config_file):
     command = f"conda run -n GRTL python main.py {config_file}"
     subprocess.run(command, text=True, shell=True)  #RUN EXPERIMENT
     
-    # NEED TO CHANGE FOR OPT
-    base_folder = current_directory + "/output/results/optimization/TwitterGCN-5c8ed977df8e2c27ff4619fdc69ccd98"
+    
+    base_folder = current_directory + "/output/results/optimization"
     #print(base_folder)
     # Find the most recent results path
     output_path = find_most_recent_results_path(base_folder)
@@ -46,7 +46,7 @@ def run_experiment(config_file):
 
     # Extract the 'Oracle_Accuracy' values
     oracle_accuracy_values = json_data.get('Oracle_Accuracy', [])
-    # Maybe get oracle_calls?
+    # Maybe use oracle_calls too?
     oracle_acc = oracle_accuracy_values.count(1)/len(oracle_accuracy_values)
     return oracle_acc
 
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     config_file_path = "config/submission/oracle_template_optimization/TWITTER-test.json"
     current_directory = os.getcwd()
     study = optuna.create_study(direction='maximize')
-    study.optimize(objective, n_trials=20)  # You can adjust the number of trials
+    study.optimize(objective, n_trials=20)  # adjust the number of trials
 
 
 

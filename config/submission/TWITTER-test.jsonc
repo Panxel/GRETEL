@@ -1,6 +1,6 @@
 {  
     "experiment" : {
-        "scope": "test",
+        "scope": "examples_configs",
         "parameters" : {
             "lock_release_tout":120,
             "propagate":[
@@ -20,7 +20,7 @@
               "generator": {
                 "class": "src.dataset.generators.twitter.TwitterGCN", 
                 "parameters": { "data_dir": "data/datasets/TWITTER-Real-Graph-Partial", 
-                "num_instances": 50 }
+                "num_instances": 130 }
               }
           } 
       },
