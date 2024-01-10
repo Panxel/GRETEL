@@ -11,17 +11,19 @@ def objective(trial):
     # Define the hyperparameters to optimize
 
     ######## Ajust others here #######
-    epochs = trial.suggest_categorical('epochs', [1, 10, 50, 100])
-    n_nodes = trial.suggest_categorical('n_nodes', [1, 10, 50, 100])
-    lr = trial.suggest_categorical('lr', [1e-5, 1e-4, 1e-3, 1e-2, 1e-1])
+    epochs = trial.suggest_categorical('epochs', [10])
+    lr = trial.suggest_categorical('lr', [1e-3, 1e-2, 1e-1])
     batch_size_ratio = trial.suggest_categorical('batch_size_ratio', [0.1, 0.3, 0.5, 0.8])
+    alpha = trial.suggest_categorical('alpha', [0.1, 0.3, 0.5, 0.8])
+    lam = trial.suggest_categorical('lam', [0.1, 0.3, 0.5, 0.8])
+    gamma = trial.suggest_categorical('gamma', [0.1, 0.3, 0.5, 0.8])
     ##################################
 
 
 
     # Update the configuration file with the new hyperparameters
     ######## Change paramters accordingly ########
-    new_config_file_path = update_config_file(config_file_path, epochs=epochs, n_nodes=n_nodes, lr=lr, batch_size_ratio=batch_size_ratio)
+    new_config_file_path = update_config_file(config_file_path, epochs=epochs, lr=lr, batch_size_ratio=batch_size_ratio,alpha = alpha,lam=lam,gamma=gamma)
     ##############################################
 
 
@@ -36,7 +38,7 @@ def run_experiment(config_file):
     subprocess.run(command, text=True, shell=True)  #RUN EXPERIMENT
     
     
-    base_folder = current_directory + "/output/results/optimization"
+    base_folder = current_directory + "/output/results/explainer_opti"
     #print(base_folder)
     # Find the most recent results path
     output_path = find_most_recent_results_path(base_folder)
@@ -72,7 +74,7 @@ def find_most_recent_results_path(base_folder):
     return None
 
 
-def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
+def update_config_file(config_file_path, epochs, batch_size_ratio, lr,alpha,lam,gamma):
     config_directory = os.path.dirname(config_file_path)
     
     with open(config_file_path, 'r') as file:
@@ -89,7 +91,9 @@ def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
     explainer_params['epochs'] = epochs
     explainer_params['batch_size_ratio'] = batch_size_ratio
     explainer_params['lr'] = lr
-    explainer_params['n_nodes'] = n_nodes
+    explainer_params['alpha'] = alpha
+    explainer_params['lam'] = lam
+    explainer_params['gamma'] = gamma
     
     # We'll just take default values for alpha, lam, gamma
     ##################################
@@ -100,7 +104,7 @@ def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
     global iteration 
     output_dir = os.path.join(config_directory, 'explainer_opt_cf2')    
     os.makedirs(output_dir, exist_ok=True)
-    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_epochs{epochs}_batch_size_ratio{batch_size_ratio}_{iteration}.json'))
+    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_cf2_epochs{epochs}_batch_size_ratio{batch_size_ratio}_{iteration}.json'))
     with open(updated_config_path, 'w') as file:
         json.dump(config, file, indent=2)
     iteration +=1
@@ -109,7 +113,7 @@ def update_config_file(config_file_path, epochs, batch_size_ratio, n_nodes, lr):
             
 if __name__ == "__main__":
     
-    config_file_path = "config/submission/oracle_template_optimization/TWITTER-test.json" #add optimized oracle file here
+    config_file_path = "config/submission/explainers_template_optimization/TWITTER-cf2.json" #add optimized oracle file here
     current_directory = os.getcwd()
     study = optuna.create_study(directions=['minimize', 'maximize'])
     study.optimize(objective, n_trials=2)  # adjust the number of trials

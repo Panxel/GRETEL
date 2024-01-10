@@ -94,7 +94,7 @@ def update_config_file(config_file_path, epochs):
     global iteration 
     output_dir = os.path.join(config_directory, 'explainer_opt_irand')    
     os.makedirs(output_dir, exist_ok=True)
-    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_epochs{epochs}_{iteration}.json'))
+    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_gan_epochs{epochs}_{iteration}.json'))
     with open(updated_config_path, 'w') as file:
         json.dump(config, file, indent=2)
     iteration +=1

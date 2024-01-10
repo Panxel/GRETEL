@@ -11,7 +11,7 @@ def objective(trial):
     # Define the hyperparameters to optimize
 
     ######## Ajust others here #######
-    p = trial.suggest_categorical('p', [0.01, 0.1, 0.5])
+    p = trial.suggest_categorical('p', [0.01, 0.1, 0.5,3])
     t = trial.suggest_categorical('t', [1, 2, 3, 4, 5])
     ##################################
 
@@ -34,7 +34,7 @@ def run_experiment(config_file):
     subprocess.run(command, text=True, shell=True)  #RUN EXPERIMENT
     
     
-    base_folder = current_directory + "/output/results/optimization"
+    base_folder = current_directory + "/output/results/explainer_opti"
     #print(base_folder)
     # Find the most recent results path
     output_path = find_most_recent_results_path(base_folder)
@@ -95,7 +95,7 @@ def update_config_file(config_file_path, p, t):
     global iteration 
     output_dir = os.path.join(config_directory, 'explainer_opt_irand')    
     os.makedirs(output_dir, exist_ok=True)
-    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_p{p}_t{t}_{iteration}.json'))
+    updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_irand_p{p}_t{t}_{iteration}.json'))
     with open(updated_config_path, 'w') as file:
         json.dump(config, file, indent=2)
     iteration +=1
