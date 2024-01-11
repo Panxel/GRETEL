@@ -11,7 +11,7 @@ def objective(trial):
     # Define the hyperparameters to optimize
 
     ######## Ajust others here #######
-    epochs = trial.suggest_categorical('epochs', [10])
+    epochs = trial.suggest_categorical('epochs', [10,30,50,70,100])
     lr = trial.suggest_categorical('lr', [1e-3, 1e-2, 1e-1])
     batch_size_ratio = trial.suggest_categorical('batch_size_ratio', [0.1, 0.3, 0.5, 0.8])
     alpha = trial.suggest_categorical('alpha', [0.1, 0.3, 0.5, 0.8])
@@ -113,7 +113,7 @@ def update_config_file(config_file_path, epochs, batch_size_ratio, lr,alpha,lam,
             
 if __name__ == "__main__":
     
-    config_file_path = "config/submission/explainers_template_optimization/TWITTER_explainer_template.json" #add optimized oracle file here
+    config_file_path = "config/submission/explainers_template_optimization/TWITTER-explainer_template.json" #add optimized oracle file here
     current_directory = os.getcwd()
     study = optuna.create_study(directions=['minimize', 'maximize'])
     study.optimize(objective, n_trials=20)  # adjust the number of trials
