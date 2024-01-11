@@ -1,0 +1,44 @@
+2024-01-11 16:34:57,-114719033 | INFO | 38414 - Executing: config/submission/obs_optimized/TWITTER-obs-fold4.jsonc Run: -1
+2024-01-11 16:34:57,-114719033 | INFO | 38414 - Creating the evaluation manager.......................................................
+2024-01-11 16:34:57,-114719033 | INFO | 38414 - Creating the PAIRED evaluators...............................................................
+2024-01-11 16:34:57,-114719026 | INFO | 38414 - Loading: TwitterGCN-8102912d7ed4d1787ffe6d5326cf8c7a
+2024-01-11 16:34:57,-114719020 | INFO | 38414 - Created: TwitterGCN-8102912d7ed4d1787ffe6d5326cf8c7a
+2024-01-11 16:34:57,-114719020 | INFO | 38414 - Instantiating: src.oracle.nn.gcn.DownstreamGCN
+2024-01-11 16:34:57,-114719016 | INFO | 38414 - Instantiating: torch.optim.RMSprop
+2024-01-11 16:34:57,-114719015 | INFO | 38414 - Instantiating: torch.nn.CrossEntropyLoss
+2024-01-11 16:34:57,-114719013 | INFO | 38414 - Loading: OracleTorch-a5753bf2b57e9ff756e7b6e5414dfd5a
+2024-01-11 16:34:57,-114719009 | INFO | 38414 - Created: OracleTorch-a5753bf2b57e9ff756e7b6e5414dfd5a
+2024-01-11 16:34:57,-114719008 | INFO | 38414 - Instantiating: src.explainer.heuristic.obs_dist.ObliviousBidirectionalDistance
+2024-01-11 16:34:57,-114719007 | INFO | 38414 - Created: ObliviousBidirectionalSearchExplainer-b386f6550c25c4dbccdf6a971665cf27
+2024-01-11 16:34:57,-114719006 | INFO | 38414 - Evaluating the explainers.............................................................
+2024-01-11 16:34:57,-114719006 | INFO | 38414 - Evaluating instance with id 3
+2024-01-11 16:35:00,-114715785 | INFO | 38414 - evaluated instance with id 3
+2024-01-11 16:35:00,-114715785 | INFO | 38414 - Evaluating instance with id 6
+2024-01-11 16:35:03,-114712733 | INFO | 38414 - evaluated instance with id 6
+2024-01-11 16:35:03,-114712732 | INFO | 38414 - Evaluating instance with id 30
+2024-01-11 16:35:06,-114709682 | INFO | 38414 - evaluated instance with id 30
+2024-01-11 16:35:06,-114709682 | INFO | 38414 - Evaluating instance with id 50
+2024-01-11 16:35:09,-114706630 | INFO | 38414 - evaluated instance with id 50
+2024-01-11 16:35:09,-114706630 | INFO | 38414 - Evaluating instance with id 56
+2024-01-11 16:35:13,-114703440 | INFO | 38414 - evaluated instance with id 56
+2024-01-11 16:35:13,-114703440 | INFO | 38414 - Evaluating instance with id 62
+2024-01-11 16:35:16,-114700293 | INFO | 38414 - evaluated instance with id 62
+2024-01-11 16:35:16,-114700293 | INFO | 38414 - Evaluating instance with id 76
+2024-01-11 16:35:19,-114697035 | INFO | 38414 - evaluated instance with id 76
+2024-01-11 16:35:19,-114697035 | INFO | 38414 - Evaluating instance with id 81
+2024-01-11 16:35:22,-114693946 | INFO | 38414 - evaluated instance with id 81
+2024-01-11 16:35:22,-114693946 | INFO | 38414 - Evaluating instance with id 86
+2024-01-11 16:35:25,-114690632 | INFO | 38414 - evaluated instance with id 86
+2024-01-11 16:35:25,-114690632 | INFO | 38414 - Evaluating instance with id 126
+2024-01-11 16:35:29,-114687085 | INFO | 38414 - evaluated instance with id 126
+2024-01-11 16:35:29,-114687085 | INFO | 38414 - Evaluating instance with id 128
+2024-01-11 16:35:32,-114683865 | INFO | 38414 - evaluated instance with id 128
+2024-01-11 16:35:32,-114683865 | INFO | 38414 - Evaluating instance with id 139
+2024-01-11 16:35:35,-114680778 | INFO | 38414 - evaluated instance with id 139
+2024-01-11 16:35:35,-114680778 | INFO | 38414 - Evaluating instance with id 140
+2024-01-11 16:35:38,-114677626 | INFO | 38414 - evaluated instance with id 140
+2024-01-11 16:35:38,-114677625 | INFO | 38414 - Evaluating instance with id 148
+2024-01-11 16:35:41,-114674557 | INFO | 38414 - evaluated instance with id 148
+2024-01-11 16:35:41,-114674557 | INFO | 38414 - Evaluating instance with id 149
+2024-01-11 16:35:45,-114671424 | INFO | 38414 - evaluated instance with id 149
+2024-01-11 16:35:45,-114671424 | INFO | 38414 - {'config': {'dataset': {'class': 'src.dataset.dataset_base.Dataset', 'parameters': {'generator': {'class': 'src.dataset.generators.twitter.TwitterGCN', 'parameters': {'data_dir': 'data/datasets/TWITTER-Real-Graph-Partial', 'num_instances': 150}}, 'manipulators': [{'class': 'src.dataset.manipulators.causality.Causality', 'parameters': {}}, {'class': 'src.dataset.manipulators.centralities.NodeCentrality', 'parameters': {}}, {'class': 'src.dataset.manipulators.weights.EdgeWeights', 'parameters': {}}], 'n_splits': 10, 'shuffle': True}}, 'oracle': {'class': 'src.oracle.nn.torch.OracleTorch', 'parameters': {'epochs': 100, 'batch_size': 64, 'optimizer': {'class': 'torch.optim.RMSprop', 'parameters': {'lr': 0.1, 'alpha': 0.99, 'eps': 1e-08, 'weight_decay': 0, 'momentum': 0, 'centered': False, 'maximize': False, 'differentiable': False}}, 'loss_fn': {'class': 'torch.nn.CrossEntropyLoss', 'parameters': {'ignore_index': -100, 'reduction': 'mean', 'label_smoothing': 0.0}}, 'model': {'class': 'src.oracle.nn.gcn.DownstreamGCN', 'parameters': {'num_conv_layers': 2, 'num_dense_layers': 1, 'conv_booster': 1, 'linear_decay': 1.0, 'node_features': 8, 'n_classes': 2}}, 'fold_id': -1, 'retrain': False}}, 'explainer': {'class': 'src.explainer.heuristic.obs.ObliviousBidirectionalSearchExplainer', 'parameters': {'fold_id': 4, 'retrain': False, 'distance_metric': {'class': 'src.explainer.heuristic.obs_dist.ObliviousBidirectionalDistance', 'parameters': {}}}}, 'metrics': [{'name': 'graph_edit_distance', 'parameters': {}}, {'name': 'oracle_calls', 'parameters': {}}, {'name': 'correctness', 'parameters': {}}, {'name': 'sparsity', 'parameters': {}}, {'name': 'fidelity', 'parameters': {}}, {'name': 'oracle_accuracy', 'parameters': {}}], 'scope': 'obs_optimized'}, 'runtime': [3.2115533351898193, 3.0448296070098877, 3.0424859523773193, 3.0445218086242676, 3.1810386180877686, 3.1387369632720947, 3.2497639656066895, 3.0807313919067383, 3.305008888244629, 3.5383388996124268, 3.2113356590270996, 3.078329563140869, 3.1444027423858643, 3.0590672492980957, 3.1244421005249023], 'Graph_Edit_Distance': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 'Oracle_Calls': [2001, 2001, 2001, 2001, 2001, 2001, 2001, 2001, 2001, 2001, 2001, 2001, 2001, 2001, 2001], 'Correctness': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'Sparsity': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 'Fidelity': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'Oracle_Accuracy': [1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1]}

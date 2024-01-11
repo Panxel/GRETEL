@@ -1,0 +1,43 @@
+2024-01-11 16:29:58,-115018022 | INFO | 37084 - Executing: config/submission/irand_optimized/TWITTER-irand-fold0.jsonc Run: -1
+2024-01-11 16:29:58,-115018022 | INFO | 37084 - Creating the evaluation manager.......................................................
+2024-01-11 16:29:58,-115018021 | INFO | 37084 - Creating the PAIRED evaluators...............................................................
+2024-01-11 16:29:58,-115018015 | INFO | 37084 - Loading: TwitterGCN-8102912d7ed4d1787ffe6d5326cf8c7a
+2024-01-11 16:29:58,-115018009 | INFO | 37084 - Created: TwitterGCN-8102912d7ed4d1787ffe6d5326cf8c7a
+2024-01-11 16:29:58,-115018008 | INFO | 37084 - Instantiating: src.oracle.nn.gcn.DownstreamGCN
+2024-01-11 16:29:58,-115018005 | INFO | 37084 - Instantiating: torch.optim.RMSprop
+2024-01-11 16:29:58,-115018004 | INFO | 37084 - Instantiating: torch.nn.CrossEntropyLoss
+2024-01-11 16:29:58,-115018001 | INFO | 37084 - Loading: OracleTorch-a5753bf2b57e9ff756e7b6e5414dfd5a
+2024-01-11 16:29:58,-115017998 | INFO | 37084 - Created: OracleTorch-a5753bf2b57e9ff756e7b6e5414dfd5a
+2024-01-11 16:29:58,-115017995 | INFO | 37084 - Created: IRandExplainer-8402b5ceeb00c15efaad3bdf567078d3
+2024-01-11 16:29:58,-115017995 | INFO | 37084 - Evaluating the explainers.............................................................
+2024-01-11 16:29:58,-115017994 | INFO | 37084 - Evaluating instance with id 31
+2024-01-11 16:29:58,-115017848 | INFO | 37084 - evaluated instance with id 31
+2024-01-11 16:29:58,-115017848 | INFO | 37084 - Evaluating instance with id 37
+2024-01-11 16:29:58,-115017633 | INFO | 37084 - evaluated instance with id 37
+2024-01-11 16:29:58,-115017633 | INFO | 37084 - Evaluating instance with id 59
+2024-01-11 16:29:58,-115017605 | INFO | 37084 - evaluated instance with id 59
+2024-01-11 16:29:58,-115017605 | INFO | 37084 - Evaluating instance with id 60
+2024-01-11 16:29:59,-115017471 | INFO | 37084 - evaluated instance with id 60
+2024-01-11 16:29:59,-115017470 | INFO | 37084 - Evaluating instance with id 72
+2024-01-11 16:29:59,-115017337 | INFO | 37084 - evaluated instance with id 72
+2024-01-11 16:29:59,-115017337 | INFO | 37084 - Evaluating instance with id 74
+2024-01-11 16:29:59,-115017309 | INFO | 37084 - evaluated instance with id 74
+2024-01-11 16:29:59,-115017309 | INFO | 37084 - Evaluating instance with id 83
+2024-01-11 16:29:59,-115017281 | INFO | 37084 - evaluated instance with id 83
+2024-01-11 16:29:59,-115017281 | INFO | 37084 - Evaluating instance with id 96
+2024-01-11 16:29:59,-115017149 | INFO | 37084 - evaluated instance with id 96
+2024-01-11 16:29:59,-115017149 | INFO | 37084 - Evaluating instance with id 97
+2024-01-11 16:29:59,-115017121 | INFO | 37084 - evaluated instance with id 97
+2024-01-11 16:29:59,-115017121 | INFO | 37084 - Evaluating instance with id 107
+2024-01-11 16:29:59,-115016906 | INFO | 37084 - evaluated instance with id 107
+2024-01-11 16:29:59,-115016906 | INFO | 37084 - Evaluating instance with id 115
+2024-01-11 16:29:59,-115016877 | INFO | 37084 - evaluated instance with id 115
+2024-01-11 16:29:59,-115016876 | INFO | 37084 - Evaluating instance with id 129
+2024-01-11 16:29:59,-115016803 | INFO | 37084 - evaluated instance with id 129
+2024-01-11 16:29:59,-115016803 | INFO | 37084 - Evaluating instance with id 136
+2024-01-11 16:29:59,-115016774 | INFO | 37084 - evaluated instance with id 136
+2024-01-11 16:29:59,-115016774 | INFO | 37084 - Evaluating instance with id 142
+2024-01-11 16:30:00,-115016007 | INFO | 37084 - evaluated instance with id 142
+2024-01-11 16:30:00,-115016006 | INFO | 37084 - Evaluating instance with id 145
+2024-01-11 16:30:00,-115015869 | INFO | 37084 - evaluated instance with id 145
+2024-01-11 16:30:00,-115015869 | INFO | 37084 - {'config': {'dataset': {'class': 'src.dataset.dataset_base.Dataset', 'parameters': {'generator': {'class': 'src.dataset.generators.twitter.TwitterGCN', 'parameters': {'data_dir': 'data/datasets/TWITTER-Real-Graph-Partial', 'num_instances': 150}}, 'manipulators': [{'class': 'src.dataset.manipulators.causality.Causality', 'parameters': {}}, {'class': 'src.dataset.manipulators.centralities.NodeCentrality', 'parameters': {}}, {'class': 'src.dataset.manipulators.weights.EdgeWeights', 'parameters': {}}], 'n_splits': 10, 'shuffle': True}}, 'oracle': {'class': 'src.oracle.nn.torch.OracleTorch', 'parameters': {'epochs': 100, 'batch_size': 64, 'optimizer': {'class': 'torch.optim.RMSprop', 'parameters': {'lr': 0.1, 'alpha': 0.99, 'eps': 1e-08, 'weight_decay': 0, 'momentum': 0, 'centered': False, 'maximize': False, 'differentiable': False}}, 'loss_fn': {'class': 'torch.nn.CrossEntropyLoss', 'parameters': {'ignore_index': -100, 'reduction': 'mean', 'label_smoothing': 0.0}}, 'model': {'class': 'src.oracle.nn.gcn.DownstreamGCN', 'parameters': {'num_conv_layers': 2, 'num_dense_layers': 1, 'conv_booster': 1, 'linear_decay': 1.0, 'node_features': 8, 'n_classes': 2}}, 'fold_id': -1, 'retrain': False}}, 'explainer': {'class': 'src.explainer.search.i_rand.IRandExplainer', 'parameters': {'p': 3, 't': 2, 'fold_id': 0, 'retrain': False}}, 'metrics': [{'name': 'graph_edit_distance', 'parameters': {}}, {'name': 'oracle_calls', 'parameters': {}}, {'name': 'correctness', 'parameters': {}}, {'name': 'sparsity', 'parameters': {}}, {'name': 'fidelity', 'parameters': {}}, {'name': 'oracle_accuracy', 'parameters': {}}], 'scope': 'irand_optimized'}, 'runtime': [0.13763189315795898, 0.20608878135681152, 0.01954817771911621, 0.1259608268737793, 0.12517499923706055, 0.019263505935668945, 0.02009868621826172, 0.12355685234069824, 0.019193410873413086, 0.20644903182983398, 0.020431041717529297, 0.06531977653503418, 0.020001649856567383, 0.7584836483001709, 0.12877178192138672], 'Graph_Edit_Distance': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 'Oracle_Calls': [71, 119, 11, 71, 71, 11, 11, 71, 11, 119, 11, 35, 11, 431, 71], 'Correctness': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'Sparsity': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 'Fidelity': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'Oracle_Accuracy': [1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1]}
