@@ -49,7 +49,7 @@
       }
     }],
     
-    "explainers": [{"class": "src.explainer.generative.cf2.CF2Explainer","parameters":{"epochs": 300, "batch_size_ratio": 0.2, "lr" : 0.02, "alpha" : 0.7, "lam" : 20, "gamma" : 0.9}}],    
+    "explainers": [{"class": "src.explainer.generative.cf2.CF2Explainer","parameters":{"epochs": 100, "batch_size_ratio": 0.3, "lr" : 0.01, "alpha" : 0.5, "lam" : 0.8, "gamma" : 0.8}}],    
     "compose_mes" : "config/snippets/default_metrics.json",
     "compose_strs" : "config/snippets/default_store_paths.json"
 }
