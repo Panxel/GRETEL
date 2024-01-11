@@ -104,7 +104,7 @@ def update_config_file(config_file_path, epochs):
 if __name__ == "__main__":
     
     
-    config_file_path = "config/submission/oracle_template_optimization/TWITTER-test.json" #add optimized oracle file here
+    config_file_path = "config/submission/explainers_template_optimization/TWITTER_explainer_template.json" #add optimized oracle file here
     current_directory = os.getcwd()
     study = optuna.create_study(directions=['minimize', 'maximize'])
     study.optimize(objective, n_trials=2)  # adjust the number of trials
