@@ -57,7 +57,7 @@ def find_most_recent_results_path(base_folder):
     base_path = Path(base_folder)
 
     # Use rglob to recursively search for the specified file pattern
-    results_paths = list(base_path.rglob('results_run--1.json'))
+    results_paths = list(base_path.rglob('results_run_0_-1.json'))
 
     # Sort the results paths by modification time
     sorted_results_paths = sorted(results_paths, key=lambda p: p.stat().st_mtime, reverse=True)

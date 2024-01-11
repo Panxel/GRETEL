@@ -21,6 +21,27 @@
             "fold_id": -1,
             "retrain": true
           }
+        },
+        {
+          "in_sections": [
+            "do-pairs/dataset"
+          ],
+          "params": {
+            "manipulators": [
+              {
+                "class": "src.dataset.manipulators.causality.Causality",
+                "parameters": {}
+              },
+              {
+                "class": "src.dataset.manipulators.centralities.NodeCentrality",
+                "parameters": {}
+              },
+              {
+                "class": "src.dataset.manipulators.weights.EdgeWeights",
+                "parameters": {}
+              }
+            ]
+          }
         }
       ]
     }
@@ -34,7 +55,7 @@
             "class": "src.dataset.generators.twitter.TwitterGCN",
             "parameters": {
               "data_dir": "data/datasets/TWITTER-Real-Graph-Partial",
-              "num_instances": 130
+              "num_instances": 150
             }
           }
         }
@@ -43,11 +64,11 @@
         "class": "src.oracle.nn.torch.OracleTorch",
         "parameters": {
           "epochs": 100,
-          "batch_size": 32,
+          "batch_size": 64,
           "optimizer": {
             "class": "torch.optim.RMSprop",
             "parameters": {
-              "lr": 1e-05
+              "lr": 0.1
             }
           },
           "loss_fn": {
@@ -59,10 +80,10 @@
           "model": {
             "class": "src.oracle.nn.gcn.DownstreamGCN",
             "parameters": {
-              "num_conv_layers": 5,
+              "num_conv_layers": 2,
               "num_dense_layers": 1,
-              "conv_booster": 3.0,
-              "linear_decay": 1.5
+              "conv_booster": 1.0,
+              "linear_decay": 1.0
             }
           }
         }

@@ -14,11 +14,11 @@ iteration = 0
 
 def objective(trial):
     # Define the hyperparameters to optimize
-    epochs = trial.suggest_categorical('epochs', [1, 10, 50, 100])
-    batch_size = trial.suggest_categorical('batch_size', [1, 32, 64])
+    epochs = trial.suggest_categorical('epochs', [35, 50, 75, 100])
+    batch_size = trial.suggest_categorical('batch_size', [16, 32, 64])
     optimizer = trial.suggest_categorical('optimizer', ["torch.optim.Adam", "torch.optim.RMSprop"])
-    lr = trial.suggest_categorical('lr', [1e-5, 1e-4, 1e-3, 1e-2, 1e-1])
-    loss_f = trial.suggest_categorical('loss_f', ["torch.nn.CrossEntropyLoss", "torch.nn.MSELoss"])
+    lr = trial.suggest_categorical('lr', [1e-3, 1e-2, 1e-1])
+    loss_f = trial.suggest_categorical('loss_f', ["torch.nn.CrossEntropyLoss"]) # "torch.nn.MSELoss" is not working, we tried
     reduction = trial.suggest_categorical('reduction', ["mean", "sum"])
     num_conv_layers = trial.suggest_categorical('num_conv_layers', [1, 2, 3, 4, 5])
     num_dense_layers = trial.suggest_categorical('num_dense_layers', [1, 2, 3])
@@ -62,7 +62,7 @@ def find_most_recent_results_path(base_folder):
     base_path = Path(base_folder)
 
     # Use rglob to recursively search for the specified file pattern
-    results_paths = list(base_path.rglob('results_run--1.json'))
+    results_paths = list(base_path.rglob('results_run_0_-1.json'))
 
     # Sort the results paths by modification time
     sorted_results_paths = sorted(results_paths, key=lambda p: p.stat().st_mtime, reverse=True)

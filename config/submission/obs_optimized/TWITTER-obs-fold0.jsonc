@@ -1,6 +1,6 @@
 {  
     "experiment" : {
-        "scope": "examples_configs",
+        "scope": "obs_optimized",
         "parameters" : {
             "lock_release_tout":120,
             "propagate":[
@@ -49,7 +49,7 @@
       }
     }],
     
-    "explainers": [{"class": "src.explainer.search.dces.DCESExplainer","parameters": {}}],
+    "explainers": [{"class": "src.explainer.heuristic.obs.ObliviousBidirectionalSearchExplainer","parameters":{}}],    
     "compose_mes" : "config/snippets/default_metrics.json",
     "compose_strs" : "config/snippets/default_store_paths.json"
 }

@@ -11,7 +11,7 @@ def objective(trial):
     # Define the hyperparameters to optimize
 
     ######## Ajust others here #######
-    epochs = trial.suggest_categorical('epochs', [50, 100, 150])
+    epochs = trial.suggest_categorical('epochs', [25, 50, 75, 100, 150])
     
     ##################################
 
@@ -34,7 +34,7 @@ def run_experiment(config_file):
     subprocess.run(command, text=True, shell=True)  #RUN EXPERIMENT
     
     
-    base_folder = current_directory + "/output/results/optimization"
+    base_folder = current_directory + "/output/results/explainer_opti"
     #print(base_folder)
     # Find the most recent results path
     output_path = find_most_recent_results_path(base_folder)
@@ -57,7 +57,7 @@ def find_most_recent_results_path(base_folder):
     base_path = Path(base_folder)
 
     # Use rglob to recursively search for the specified file pattern
-    results_paths = list(base_path.rglob('results_run--1.json'))
+    results_paths = list(base_path.rglob('results_run_0_-1.json'))
 
     # Sort the results paths by modification time
     sorted_results_paths = sorted(results_paths, key=lambda p: p.stat().st_mtime, reverse=True)
@@ -92,7 +92,7 @@ def update_config_file(config_file_path, epochs):
 
     # Save the updated configuration
     global iteration 
-    output_dir = os.path.join(config_directory, 'explainer_opt_irand')    
+    output_dir = os.path.join(config_directory, 'explainer_opt_gan')    
     os.makedirs(output_dir, exist_ok=True)
     updated_config_path = os.path.join(output_dir, os.path.basename(config_file_path).replace('.json', f'_gan_epochs{epochs}_{iteration}.json'))
     with open(updated_config_path, 'w') as file:
