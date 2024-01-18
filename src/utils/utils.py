@@ -3,7 +3,7 @@ import copy
 import json
 import os
 import torch
-
+import numpy as np
 
 def update_saved_pyg(input_file,output_file):
     old_model =  torch.load(input_file, map_location=torch.device('cpu'))
@@ -51,7 +51,23 @@ def unfold_confs(based_dir,out_dir,prefix,num_folds=10):
                                 with open(out_file, 'w') as o_file:
                                     json.dump(current_conf, o_file)
                                 print(out_file)
+                                
+def pad_adj_matrix(adj_matrix, target_dimension):
+    # Get the current dimensions of the adjacency matrix
+    current_rows, current_cols = adj_matrix.shape
+    # Calculate the amount of padding needed for rows and columns
+    pad_rows = max(0, target_dimension - current_rows)
+    pad_cols = max(0, target_dimension - current_cols)
+    # Pad the adjacency matrix with zeros
+    return np.pad(adj_matrix, ((0, pad_rows), (0, pad_cols)), mode='constant')
 
+def pad_features(features, target_dimension):
+    nodes, feature_dim = features.shape
+    if nodes < target_dimension:
+        rows_to_add = max(0, target_dimension - nodes)
+        to_pad = np.zeros((rows_to_add, feature_dim))
+        features = np.vstack([features, to_pad])
+    return features
 # from src.utils.utils import update_saved_pyg 
 
 #input_file="/NFSHOME/mprado/CODE/gretel-steel-2/GRETEL/data/explainers/clear_fit_on_tree-cycles_instances-500_nodes_per_inst-28_nodes_in_cycles-7_fold_id=0_batch_size_ratio=0.15_alpha=0.4_lr=0.01_weight_decay=5e-05_epochs=600_dropout=0.1/old_explainer"
